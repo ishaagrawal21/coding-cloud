@@ -108,29 +108,6 @@ export default function BookSetForm({ bookSet, onDone }) {
   });
 
   const onSubmit = (data) => {
-    // extra guard: must have at least one book
-    if (selectedItems.length === 0) {
-      setError("books", {
-        type: "manual",
-        message: "Please add at least one book to the set",
-      });
-      return;
-    } else {
-      clearErrors("books");
-    }
-
-    // validate quantities > 0
-    const invalidQty = selectedItems.find(
-      (i) => !i.quantity || Number(i.quantity) <= 0
-    );
-    if (invalidQty) {
-      setError("books", {
-        type: "manual",
-        message: "Quantity for each book must be at least 1",
-      });
-      return;
-    }
-
     const payload = {
       board_id: data.board_id,
       medium_id: data.medium_id,
@@ -328,7 +305,7 @@ export default function BookSetForm({ bookSet, onDone }) {
         </Typography>
 
         <Stack direction={{ xs: "column", sm: "row" }} spacing={2} alignItems="center">
-          <FormControl fullWidth error={!!errors.books}>
+          <FormControl fullWidth>
             <InputLabel>Books</InputLabel>
             <Select
               label="Books"
@@ -346,11 +323,6 @@ export default function BookSetForm({ bookSet, onDone }) {
                 ))}
             </Select>
           </FormControl>
-          {errors.books && (
-            <Typography variant="caption" color="error">
-              {errors.books.message}
-            </Typography>
-          )}
         </Stack>
 
         {selectedItems.length === 0 ? (
